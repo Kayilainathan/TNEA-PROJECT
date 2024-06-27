@@ -1,0 +1,30 @@
+TNEA Choice ListName: KAYILAINATHAN 
+Cut off: 196.5
+Number of Choices: 5
+S.NO	College Code	College Name	Department
+                    1
+                    1419
+                    				Sri Sairam
+                    	CSE
+                
+                    2
+                    1216
+                    				Saveetha
+                    	ECE
+                
+                    3
+                    1216
+                    				Saveetha
+                    	REC
+                
+                    4
+                    2006
+                    				PSG
+                    	ECE
+                
+                    5
+                    2718
+                    				SRI KRISHNA
+                    	CECE
+                	THANKS FOR USING TNEA CHOICE CREATER
+Coded by: KAYILAINATHAN

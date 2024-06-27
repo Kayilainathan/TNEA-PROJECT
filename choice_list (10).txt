@@ -1,0 +1,15 @@
+TNEA Choice ListName: W 
+Cut off: 188.6
+Number of Choices: 2
+S.NOCollege CodeCollege NameDepartment
+                    1
+                    
+                    Unknown
+                    
+                
+                    2
+                    
+                    Unknown
+                    
+                	THANKS FOR USING TNEA CHOICE CREATER
+Coded by: KAYILAINATHAN

@@ -1,0 +1,48 @@
+
+        				TNEA CHOICE LIST
+        
+NAME: K
+        
+Cut off: 196
+        
+No of Choices: 1
+
+        
+S.NO      COLLEGE CODE     COLLEGE NAME              DEPARTMENT
+        
+_____________________________________________________________________
+      
+          
+1        1                 CEG                         
+          
+___________________________________________________________________
+        
+        
+	Thank you K for using choice list creater - coded by KAYILAINATHAN
+        
+			TOP COLLEGE LIST
+      
+1    - CEG
+4    - MIT
+1315    - SSN
+1399    - CIT
+2006    - PSG
+1211    - REC
+1219    - SVCE
+1419    - Sri Sairam
+1216    - Saveetha
+1317    - St.Joseph
+1113    - RMK
+1112    - RMD
+1324    - Sri Sairam Institute
+1450    - Loyola ICAM
+1210    - PANIMALAR
+2005    - GCT Coimbatore
+2377    - PSG iTECH
+1422    - SRM Valliammai
+2718    - SRI KRISHNA
+2739    - SRI ESWAR
+5008    - THIAGARAJAR
+2007    - CIT Coimbatore
+
+									kayilainathan.choicelist.c.code

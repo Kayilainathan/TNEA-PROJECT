@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TNEA Choice List Generator</title>
+</head>
+<body>
+  <h1>TNEA Choice List Generator</h1>
+
+  <form id="choice-form">
+    <label for="name">Enter your Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="cutoff">Enter your Cut off:</label>
+    <input type="number" id="cutoff" name="cutoff" required><br><br>
+
+    <label for="choices">Number of Choices:</label>
+    <input type="number" id="choices" name="choices" required><br><br>
+
+    <div id="choice-inputs">
+      </div>
+
+    <button type="submit">Generate Choice List</button>
+  </form>
+
+  <div id="choice-list">
+    </div>
+
+  <a id="download-link" download="choice_list.txt" href="#">Download Choice List</a>
+
+  <script>
+    const choiceForm = document.getElementById('choice-form');
+    const choiceInputs = document.getElementById('choice-inputs');
+    const choiceList = document.getElementById('choice-list');
+    const downloadLink = document.getElementById('download-link');
+
+    const colleges = [
+      { code: "1", name: "CEG" },
+      { code: "4", name: "MIT" },
+      { code: "1315", name: "SSN" },
+      { code: "1399", name: "CIT" },
+      { code: "2006", name: "PSG" },
+      { code: "1211", name: "REC" },
+      { code: "1219", name: "SVCE" },
+      { code: "1419", name: "Sri Sairam" },
+      { code: "1216", name: "Saveetha" },
+      { code: "1317", name: "St.Joseph" },
+      { code: "1113", name: "RMK" },
+      { code: "1112", name: "RMD" },
+      { code: "1324", name: "Sri Sairam Institute" },
+      { code: "1450", name: "Loyola ICAM" },
+      { code: "1210", name: "PANIMALAR" },
+      { code: "2005", name: "GCT Coimbatore" },
+      { code: "2377", name: "PSG iTECH" },
+      { code: "1422", name: "SRM Valliammai" },
+      { code: "2718", name: "SRI KRISHNA" },
+      { code: "2739", name: "SRI ESWAR" },
+      { code: "5008", name: "THIAGARAJAR" },
+      { code: "2007", name: "CIT Coimbatore" }
+    ];
+
+    // Function to add choice input fields
+    function addChoiceInputs(numChoices) {
+      choiceInputs.innerHTML = '';
+      for (let i = 1; i <= numChoices; i++) {
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <label for="choice-${i}-code">College Code for Choice ${i}:</label>
+          <select id="choice-${i}-code" name="choice-${i}-code">
+            ${colleges.map(college => `<option value="${college.code}">${college.code} - ${college.name}</option>`).join('')}
+          </select><br><br>
+
+          <label for="choice-${i}-dept">Department for Choice ${i}:</label>
+          <input type="text" id="choice-${i}-dept" name="choice-${i}-dept"><br><br>
+        `;
+        choiceInputs.appendChild(div);
+      }
+    }
+
+    // Event listener for form submission
+    choiceForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const cutoff = document.getElementById('cutoff').value;
+      const numChoices = document.getElementById('choices').value;
+
+      // Generate choice list
+      const choiceListText = generateChoiceList(name, cutoff, numChoices);
+
+      // Display choice list
+      choiceList.innerHTML = choiceListText;
+
+      // Create download link
+      const blob = new Blob([choiceListText], { type: 'text/plain' });
+      downloadLink.href = URL.createObjectURL(blob);
+
+      // Show download link
+      downloadLink.style.display = 'block';
+    });
+
+    // Function to generate the choice list text
+    function generateChoiceList(name, cutoff, numChoices) {
+      let choiceListText = `
+        \t\t\t\tTNEA CHOICE LIST
+        \nNAME: ${name}
+        \nCut off: ${cutoff}
+        \nNo of Choices: ${numChoices}
+
+        \nS.NO      COLLEGE CODE     COLLEGE NAME              DEPARTMENT
+        \n_____________________________________________________________________
+      `;
+
+      for (let i = 1; i <= numChoices; i++) {
+        const code = document.getElementById(`choice-${i}-code`).value;
+        const dept = document.getElementById(`choice-${i}-dept`).value;
+        const college = colleges.find(c => c.code === code);
+
+        choiceListText += `
+          \n${i}        ${code}                 ${college ? college.name : '-'}                         ${dept}
+          \n___________________________________________________________________
+        `;
+      }
+
+      choiceListText += `
+        \n\tThank you ${name} for using choice list creater - coded by KAYILAINATHAN
+        \n\t\t\tTOP COLLEGE LIST
+      `;
+
+      colleges.forEach(college => {
+        choiceListText += `\n${college.code}    - ${college.name}`;
+      });
+
+      choiceListText += `\n\n\t\t\t\t\t\t\t\t\tkayilainathan.choicelist.c.code`;
+
+      return choiceListText;
+    }
+
+    // Add initial choice inputs
+    addChoiceInputs(1);
+
+    // Event listener for choices input change
+    choiceForm.addEventListener('change', function() {
+      const numChoices = parseInt(document.getElementById('choices').value);
+      addChoiceInputs(numChoices);
+    });
+  </script>
+</body>
+</html>

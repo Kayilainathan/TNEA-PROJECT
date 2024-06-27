@@ -1,0 +1,9 @@
+TNEA CHOICE LIST
+
+NAME: Kayilainathan
+Cut off: 196
+
+S.NO	COLLEGE CODE	COLLEGE NAME	DEPARTMENT
+_____________________________________________________________________
+1	1	CEG	Department
+2	4	MIT	Department

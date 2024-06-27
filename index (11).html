@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TNEA Choice List Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>TNEA Choice List Generator</h1>
+    <div id="choices">
+      <h2>Enter Choices:</h2>
+      <div id="choices-input">
+        <input type="text" id="name" placeholder="Your Name"><br><br>
+        <input type="number" id="cutoff" placeholder="Cut off"><br><br>
+        <input type="number" id="numChoices" placeholder="Number of Choices"><br><br>
+        <div id="choices-list"></div>
+        <button onclick="addChoice()">Add Choice</button>
+        <button onclick="generateList()">Generate List</button>
+      </div>
+    </div>
+    <div id="generated-list">
+      <h2>Generated List:</h2>
+      <textarea id="generated-text" readonly></textarea>
+      <button onclick="downloadFile()">Download List</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

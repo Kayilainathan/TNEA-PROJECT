@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TNEA Choice List Creator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>TNEA Choice List Creator</h1>
+    <form id="choiceForm">
+      <label for="name">Enter your name:</label>
+      <input type="text" id="name" required>
+
+      <label for="cutoff">Enter your Cut off:</label>
+      <input type="number" id="cutoff" step="0.1" required>
+
+      <label for="choices">Enter the number of choices:</label>
+      <input type="number" id="choices" required>
+
+      <div id="choicesContainer"></div>
+
+      <button type="button" onclick="generateChoices()">Generate Choices</button>
+    </form>
+    <div id="previewContainer"></div>
+    <button id="downloadBtn" onclick="downloadChoices()">Download Choices</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

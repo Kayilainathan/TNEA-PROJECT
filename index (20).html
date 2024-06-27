@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TNEA Choice List Generator</title>
+  <style>
+    /* Embedded CSS styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    
+    .choice-item {
+      margin-bottom: 10px;
+    }
+
+    .display-container {
+      margin-top: 20px;
+    }
+
+    .display-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    .display-item p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>TNEA Choice List Generator</h1>
+  <h2>Created by KAYILAINATHAN</h2>
+  <form id="choiceForm">
+    <label for="name">Enter your name:</label>
+    <input type="text" id="name" required><br><br>
+
+    <label for="cutoff">Enter your Cut off:</label>
+    <input type="number" id="cutoff" step="0.01" required><br><br>
+
+    <label for="choices">Enter the number of choices:</label>
+    <input type="number" id="choices" required>
+    <button type="button" onclick="createChoices()">Create Choices</button><br><br>
+
+    <div id="choicesContainer"></div><br>
+
+    <button type="button" onclick="downloadChoices()">Download Choices</button>
+  </form>
+
+  <div id="displayChoices" class="display-container"></div>
+
+  <script>
+    // Embedded JavaScript
+    const colleges = [
+      { code: 1, name: "CEG" },
+      { code: 4, name: "MIT" },
+      { code: 1315, name: "SSN" },
+      { code: 1399, name: "CIT" },
+      { code: 2006, name: "PSG" },
+      { code: 1211, name: "REC" },
+      { code: 1219, name: "SVCE" },
+      { code: 1419, name: "Sri Sairam" },
+      { code: 1216, name: "Saveetha" },
+      { code: 1317, name: "St.Joseph" },
+      { code: 1113, name: "RMK" },
+      { code: 1112, name: "RMD" },
+      { code: 1324, name: "Sri Sairam Institute" },
+      { code: 1450, name: "Loyola ICAM" },
+      { code: 1210, name: "PANIMALAR" },
+      { code: 2005, name: "GCT Coimbatore" },
+      { code: 2377, name: "PSG iTECH" },
+      { code: 1422, name: "SRM Valliammai" },
+      { code: 2718, name: "SRI KRISHNA" },
+      { code: 2739, name: "SRI ESWAR" },
+      { code: 5008, name: "THIAGARAJAR" },
+      { code: 2007, name: "CIT Coimbatore" }
+    ];
+
+    function generateChoices() {
+      const choicesContainer = document.getElementById('choicesContainer');
+      const numChoices = document.getElementById('choices').value;
+      choicesContainer.innerHTML = '';
+
+      for (let i = 0; i < numChoices; i++) {
+        const choiceDiv = document.createElement('div');
+        choiceDiv.className = 'choice-item';
+        choiceDiv.innerHTML = `
+          <label>Choice ${i + 1}:</label>
+          <input type="number" class="college-code" placeholder="College Code" required>
+          <input type="text" class="department" placeholder="Department" required>
+        `;
+        choicesContainer.appendChild(choiceDiv);
+      }
+
+      document.getElementById('downloadBtn').style.display = 'block';
+    }
+
+    function downloadChoices() {
+      const name = document.getElementById('name').value;
+      const cutoff = document.getElementById('cutoff').value;
+      const choices = document.getElementById('choices').value;
+      const choicesContainer = document.getElementById('choicesContainer');
+
+      let content = `TNEA CHOICE LIST\n\nNAME: ${name}\nCut off: ${cutoff}\nNo of Choices: ${choices}\n\n`;
+      content += "S.NO\tCOLLEGE CODE\tCOLLEGE NAME\tDEPARTMENT\n";
+      content += "_____________________________________________________________________\n";
+
+      for (let i = 0; i < choicesContainer.children.length; i++) {
+        const choiceDiv = choicesContainer.children[i];
+        const collegeCode = choiceDiv.querySelector('.college-code').value;
+        const department = choiceDiv.querySelector('.department').value;
+
+        const college = colleges.find(c => c.code == collegeCode);
+        const collegeName = college ? college.name : '-';
+        
+        content += `${i + 1}\t${collegeCode}\t${collegeName}\t\t${department}\n`;
+        content += "_____________________________________________________________________\n";
+
+        // Display the choice on the webpage
+        displayChoice(`${i + 1}`, collegeCode, collegeName, department);
+        content+="Thanks for using choice list generator - coded by KAYILAINATHAN"
+      }
+
+      const blob = new Blob([content], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'choice_list.txt';
+      a.click();
+    }
+
+    function displayChoice(index, collegeCode, collegeName, department) {
+      const displayContainer = document.getElementById('displayChoices');
+      const choiceDiv = document.createElement('div');
+      choiceDiv.className = 'display-item';
+      choiceDiv.innerHTML = `
+        <p><strong>Choice ${index}:</strong></p>
+        <p><strong>College Code:</strong> ${collegeCode}</p>
+        <p><strong>College Name:</strong> ${collegeName}</p>
+        <p><strong>Department:</strong> ${department}</p>
+        <hr>
+      `;
+      displayContainer.appendChild(choiceDiv);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+TNEA Choice ListName: L 
+Cut off: 19.6
+Number of Choices: 3
+S.NO	College Code	College Name	Department1	2006		PSG	CSE
+                2	1315		SSN	ECE
+                3	1419		Sri Sairam	DE
+                	THANKS FOR USING TNEA CHOICE CREATER
+Coded by: KAYILAINATHAN

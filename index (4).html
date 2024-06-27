@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TNEA Choice List Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1, h2, h3 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .download-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TNEA Choice List Generator</h1>
+
+    <h2>Enter Your Details</h2>
+    <form id="choice-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required><br><br>
+
+      <label for="cutoff">Cut-off:</label>
+      <input type="number" id="cutoff" name="cutoff" step="0.1" required><br><br>
+
+      <label for="choices">Number of Choices:</label>
+      <input type="number" id="choices" name="choices" min="1" required><br><br>
+
+      <h3>College Code List:</h3>
+      <table>
+        <tr>
+          <th>Code</th>
+          <th>College Name</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>CEG</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>MIT</td>
+        </tr>
+        <tr>
+          <td>1315</td>
+          <td>SSN</td>
+        </tr>
+        <tr>
+          <td>1399</td>
+          <td>CIT</td>
+        </tr>
+        <tr>
+          <td>2006</td>
+          <td>PSG</td>
+        </tr>
+        <tr>
+          <td>1211</td>
+          <td>REC</td>
+        </tr>
+        <tr>
+          <td>1219</td>
+          <td>SVCE</td>
+        </tr>
+        <tr>
+          <td>1419</td>
+          <td>Sri Sairam</td>
+        </tr>
+        <tr>
+          <td>1216</td>
+          <td>Saveetha</td>
+        </tr>
+        <tr>
+          <td>1317</td>
+          <td>St. Joseph</td>
+        </tr>
+        <tr>
+          <td>1113</td>
+          <td>RMK</td>
+        </tr>
+        <tr>
+          <td>1112</td>
+          <td>RMD</td>
+        </tr>
+        <tr>
+          <td>1324</td>
+          <td>Sri Sairam Institute</td>
+        </tr>
+        <tr>
+          <td>1450</td>
+          <td>Loyola ICAM</td>
+        </tr>
+        <tr>
+          <td>1210</td>
+          <td>PANIMALAR</td>
+        </tr>
+        <tr>
+          <td>2005</td>
+          <td>GCT Coimbatore</td>
+        </tr>
+        <tr>
+          <td>2377</td>
+          <td>PSG iTECH</td>
+        </tr>
+        <tr>
+          <td>1422</td>
+          <td>SRM Valliammai</td>
+        </tr>
+        <tr>
+          <td>2718</td>
+          <td>SRI KRISHNA</td>
+        </tr>
+        <tr>
+          <td>2739</td>
+          <td>SRI ESWAR</td>
+        </tr>
+        <tr>
+          <td>5008</td>
+          <td>THIAGARAJAR</td>
+        </tr>
+        <tr>
+          <td>2007</td>
+          <td>CIT Coimbatore</td>
+        </tr>
+      </table>
+
+      <h3>Enter Your Choices:</h3>
+      <div id="choice-list">
+        </div>
+
+      <button type="submit">Generate Choice List</button>
+    </form>
+
+    <div id="choice-output">
+      </div>
+
+    <div class="download-link">
+      <a href="choice_list.txt" id="download-link">Download Choice List</a>
+    </div>
+
+    <p>Thank you for using the TNEA Choice List Generator - coded by KAYILAINATHAN.</p>
+    <p>Top College List:</p>
+    <ul id="college-list">
+      <li>1 - CEG</li>
+      <li>4 - MIT</li>
+      <li>1315 - SSN</li>
+      <li>1399 - CIT</li>
+      <li>2006 - PSG</li>
+      <li>1211 - REC</li>
+      <li>1219 - SVCE</li>
+      <li>1419 - Sri Sairam</li>
+      <li>1216 - Saveetha</li>
+      <li>1317 - St. Joseph</li>
+      <li>1113 - RMK</li>
+      <li>1112 - RMD</li>
+      <li>1324 - Sri Sairam Institute</li>
+      <li>1450 - Loyola ICAM</li>
+      <li>1210 - PANIMALAR</li>
+      <li>2005 - GCT Coimbatore</li>
+      <li>2377 - PSG iTECH</li>
+      <li>1422 - SRM Valliammai</li>
+      <li>2718 - SRI KRISHNA</li>
+      <li>2739 - SRI ESWAR</li>
+      <li>5008 - THIAGARAJAR</li>
+      <li>2007 - CIT Coimbatore</li>
+    </ul>
+
+    <p>kayilainathan.choicelist.c.code</p>
+  </div>
+
+  <script>
+    const choiceForm = document.getElementById('choice-form');
+    const choiceList = document.getElementById('choice-list');
+    const choiceOutput = document.getElementById('choice-output');
+    const downloadLink = document.getElementById('download-link');
+    const collegeList = document.getElementById('college-list');
+
+    choiceForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const cutoff = parseFloat(document.getElementById('cutoff').value);
+      const choices = parseInt(document.getElementById('choices').value);
+
+      // Create choice input fields
+      choiceList.innerHTML = ''; // Clear previous choices
+      for (let i = 1; i <= choices; i++) {
+        const codeLabel = document.createElement('label');
+        codeLabel.textContent = `Choice ${i} - College Code:`;
+        choiceList.appendChild(codeLabel);
+
+        const codeInput = document.createElement('input');
+        codeInput.type = 'number';
+        codeInput.name = `code${i}`;
+        choiceList.appendChild(codeInput);
+
+        const deptLabel = document.createElement('label');
+        deptLabel.textContent = `Department:`;
+        choiceList.appendChild(deptLabel);
+
+        const deptInput = document.createElement('input');
+        deptInput.type = 'text';
+        deptInput.name = `dept${i}`;
+        choiceList.appendChild(deptInput);
+
+        choiceList.appendChild(document.createElement('br'));
+        choiceList.appendChild(document.createElement('br'));
+      }
+
+      // Process form data
+      const formData = new FormData(choiceForm);
+      const choiceData = {};
+      for (const [key, value] of formData.entries()) {
+        choiceData[key] = value;
+      }
+
+      // Generate and display choice list
+      const choiceListHtml = generateChoiceListHtml(choiceData, cutoff);
+      choiceOutput.innerHTML = choiceListHtml;
+
+      // Create download link
+      const choiceListText = generateChoiceListText(choiceData, cutoff);
+      downloadLink.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(choiceListText);
+      downloadLink.download = 'choice_list.txt';
+    });
+
+    // Function to generate HTML for choice list
+    function generateChoiceListHtml(choiceData, cutoff) {
+      let html = `
+        <h2>Your Choice List:</h2>
+        <table>
+          <tr>
+            <th>S.NO</th>
+            <th>COLLEGE CODE</th>
+            <th>COLLEGE NAME</th>
+            <th>DEPARTMENT</th>
+          </tr>
+          <tr>
+            <td colspan="4">_____________________________________________________________________</td>
+          </tr>
+      `;
+
+      // College codes and names
+      const collegeCodes = {
+        '1': 'CEG',
+        '4': 'MIT',
+        '1315': 'SSN',
+        '1399': 'CIT',
+        '2006': 'PSG',
+        '1211': 'REC',
+        '1219': 'SVCE',
+        '1419': 'Sri Sairam',
+        '1216': 'Saveetha',
+        '1317': 'St. Joseph',
+        '1113': 'RMK',
+        '1112': 'RMD',
+        '1324': 'Sri Sairam Institute',
+        '1450': 'Loyola ICAM',
+        '1210': 'PANIMALAR',
+        '2005': 'GCT Coimbatore',
+        '2377': 'PSG iTECH',
+        '1422': 'SRM Valliammai',
+        '2718': 'SRI KRISHNA',
+        '2739': 'SRI ESWAR',
+        '5008': 'THIAGARAJAR',
+        '2007': 'CIT Coimbatore'
+      };
+
+      // Loop through choices and generate HTML
+      let i = 1;
+      while (choiceData[`code${i}`] !== undefined) {
+        const code = choiceData[`code${i}`];
+        const dept = choiceData[`dept${i}`];
+        let collegeName = code in collegeCodes ? collegeCodes[code] : '-';
+
+        html += `
+          <tr>
+            <td>${i}</td>
+            <td>${code}</td>
+            <td>${collegeName}</td>
+            <td>${dept}</td>
+          </tr>
+          <tr>
+            <td colspan="4">_____________________________________________________________________</td>
+          </tr>
+        `;
+        i++;
+      }
+
+      html += `
+        </table>
+      `;
+
+      // Chance of getting colleges based on cutoff
+      html += `
+        <h3>Possible Chances:</h3>
+      `;
+
+      if (cutoff >= 197.5 && choiceData.code1 === '1') {
+        html += `<p>You have chance of getting CEG, ${choiceData.dept1} dpt</p>`;
+      }
+      if (cutoff >= 193.5 && cutoff <= 197 && choiceData.code1 === '4') {
+        html += `<p>You have chance of getting MIT, ${choiceData.dept1} dpt</p>`;
+      }
+      if (cutoff >= 194.5 && cutoff <= 197 && choiceData.code1 === '1315') {
+        html += `<p>You have chance of getting SSN, ${choiceData.dept1} dpt</p>`;
+      }
+      if (cutoff >= 185 && choiceData.code1 === '1399') {
+        html += `<p>You have chance of getting CIT, ${choiceData.dept1} dpt</p>`;
+      }
+      if (cutoff >= 184 && cutoff <= 190 && choiceData.code1 === '1211') {
+        html += `<p>You have chance of getting REC, ${choiceData.dept1} dpt</p>`;
+      }
+      if (cutoff >= 180 && cutoff <= 190 && choiceData.code1 === '1219') {
+        html += `<p>You have chance of getting SVCE, ${choiceData.dept1} dpt</p>`;
+      }
+      if (cutoff >= 180 && cutoff <= 190 && choiceData.code1 === '1419') {
+        html += `<p>You have chance of getting Sri Sairam, ${choiceData.dept1} dpt</p>`;
+      }
+      if (cutoff >= 180 && cutoff <= 190 && choiceData.code1 === '1216') {
+        html += `<p>You have chance of getting Saveetha, ${choiceData.dept1} dpt</p>`;
+      }
+
+      html += `
+        <p>To download the choice list as a file, click the download tab above.</p>
+      `;
+
+      return html;
+    }
+
+    // Function to generate text for choice list
+    function generateChoiceListText(choiceData, cutoff) {
+      let text = `
+        TNEA CHOICE LIST
+
+        NAME: ${choiceData.name}
+        Cut off: ${cutoff}
+        No of Choices: ${Object.keys(choiceData).filter(key => key.startsWith('code')).length}
+
+        S.NO      COLLEGE CODE     COLLEGE NAME              DEPARTMENT
+        _____________________________________________________________________
+      `;
+
+      // College codes and names
+      const collegeCodes = {
+        '1': 'CEG',
+        '4': 'MIT',
+        '1315': 'SSN',
+        '1399': 'CIT',
+        '2006': 'PSG',
+        '1211': 'REC',
+        '1219': 'SVCE',
+        '1419': 'Sri Sairam',
+        '1216': 'Saveetha',
+        '1317': 'St. Joseph',
+        '1113': 'RMK',
+        '1112': 'RMD',
+        '1324': 'Sri Sairam Institute',
+        '1450': 'Loyola ICAM',
+        '1210': 'PANIMALAR',
+        '2005': 'GCT Coimbatore',
+        '2377': 'PSG iTECH',
+        '1422': 'SRM Valliammai',
+        '2718': 'SRI KRISHNA',
+        '2739': 'SRI ESWAR',
+        '5008': 'THIAGARAJAR',
+        '2007': 'CIT Coimbatore'
+      };
+
+      // Loop through choices and generate text
+      let i = 1;
+      while (choiceData[`code${i}`] !== undefined) {
+        const code = choiceData[`code${i}`];
+        const dept = choiceData[`dept${i}`];
+        let collegeName = code in collegeCodes ? collegeCodes[code] : '-';
+
+        text += `
+          ${i}        ${code}                 ${collegeName}                        ${dept}
+          _____________________________________________________________________
+        `;
+        i++;
+      }
+
+      // Chance of getting colleges based on cutoff
+      text += `
+        You have chance of getting 
+      `;
+
+      if (cutoff >= 197.5 && choiceData.code1 === '1') {
+        text += `CEG, ${choiceData.dept1} dpt `;
+      }
+      if (cutoff >= 193.5 && cutoff <= 197 && choiceData.code1 === '4') {
+        text += `MIT, ${choiceData.dept1} dpt `;
+      }
+      if (cutoff >= 194.5 && cutoff <= 197 && choiceData.code1 === '1315') {
+        text += `SSN, ${choiceData.dept1} dpt `;
+      }
+      if (cutoff >= 185 && choiceData.code1 === '1399') {
+        text += `CIT, ${choiceData.dept1} dpt `;
+      }
+      if (cutoff >= 184 && cutoff <= 190 && choiceData.code1 === '1211') {
+        text += `REC, ${choiceData.dept1} dpt `;
+      }
+      if (cutoff >= 180 && cutoff <= 190 && choiceData.code1 === '1219') {
+        text += `SVCE, ${choiceData.dept1} dpt `;
+      }
+      if (cutoff >= 180 && cutoff <= 190 && choiceData.code1 === '1419') {
+        text += `Sri Sairam, ${choiceData.dept1} dpt `;
+      }
+      if (cutoff >= 180 && cutoff <= 190 && choiceData.code1 === '1216') {
+        text += `Saveetha, ${choiceData.dept1} dpt `;
+      }
+
+      text += `
+        Thank you ${choiceData.name} for using choice list creater - coded by KAYILAINATHAN
+        TOP COLLEGE LIST
+      `;
+
+      // College list
+      const collegeListItems = collegeList.querySelectorAll('li');
+      collegeListItems.forEach(item => {
+        text += `\n${item.textContent}`;
+      });
+
+      text += `\n\n\t\t\t\t\t\t\t\t\tkayilainathan.choicelist.c.code`;
+      return text;
+    }
+  </script>
+</body>
+</html>

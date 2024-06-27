@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TNEA Choice List Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .container {
+      width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    input[type="text"], input[type="number"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #choiceList {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 3px;
+    }
+    #choiceList h3 {
+      margin-top: 0;
+    }
+    #downloadLink {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TNEA Choice List Generator</h1>
+    <form id="choiceForm">
+      <label for="name">Enter your Name:</label>
+      <input type="text" id="name" name="name" required><br><br>
+
+      <label for="cutoff">Enter your Cut off:</label>
+      <input type="number" id="cutoff" name="cutoff" step="0.1" required><br><br>
+
+      <label for="choices">Number of Choices:</label>
+      <input type="number" id="choices" name="choices" min="1" required><br><br>
+
+      <div id="choiceInputs">
+        </div>
+
+      <button type="button" onclick="addChoice()">Add Choice</button><br><br>
+
+      <button type="submit">Generate Choice List</button>
+    </form>
+
+    <div id="choiceList">
+      <h3>Your Choice List:</h3>
+      <pre id="choiceListOutput"></pre>
+    </div>
+
+    <a id="downloadLink" href="#" download="choice_list.txt">Download Choice List</a>
+  </div>
+
+  <script>
+    const choiceInputs = document.getElementById('choiceInputs');
+    const choiceListOutput = document.getElementById('choiceListOutput');
+    const downloadLink = document.getElementById('downloadLink');
+
+    function addChoice() {
+      const choiceCount = choiceInputs.children.length + 1;
+      const choiceDiv = document.createElement('div');
+      choiceDiv.innerHTML = `
+        <label for="code${choiceCount}">College Code:</label>
+        <input type="number" id="code${choiceCount}" name="code${choiceCount}" required><br><br>
+
+        <label for="department${choiceCount}">Department:</label>
+        <input type="text" id="department${choiceCount}" name="department${choiceCount}" required>
+      `;
+      choiceInputs.appendChild(choiceDiv);
+    }
+
+    const colleges = [
+      { "code": 1, "name": "CEG" },
+      { "code": 4, "name": "MIT" },
+      { "code": 1315, "name": "SSN" },
+      { "code": 1399, "name": "CIT" },
+      { "code": 2006, "name": "PSG" },
+      { "code": 1211, "name": "REC" },
+      { "code": 1219, "name": "SVCE" },
+      { "code": 1419, "name": "Sri Sairam" },
+      { "code": 1216, "name": "Saveetha" },
+      { "code": 1317, "name": "St.Joseph" },
+      { "code": 1113, "name": "RMK" },
+      { "code": 1112, "name": "RMD" },
+      { "code": 1324, "name": "Sri Sairam Institute" },
+      { "code": 1450, "name": "Loyola ICAM" },
+      { "code": 1210, "name": "PANIMALAR" },
+      { "code": 2005, "name": "GCT Coimbatore" },
+      { "code": 2377, "name": "PSG iTECH" },
+      { "code": 1422, "name": "SRM Valliammai" },
+      { "code": 2718, "name": "SRI KRISHNA" },
+      { "code": 2739, "name": "SRI ESWAR" },
+      { "code": 5008, "name": "THIAGARAJAR" },
+      { "code": 2007, "name": "CIT Coimbatore" }
+    ];
+
+    document.getElementById('choiceForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const cutoff = parseFloat(document.getElementById('cutoff').value);
+      const choicesCount = parseInt(document.getElementById('choices').value);
+
+      let choiceList = `\t\t\t\tTNEA CHOICE LIST\n\nNAME : ${name}\nCut off : ${cutoff.toFixed(1)}\nNo of Choices = ${choicesCount}\n\n`;
+      choiceList += `S.NO      COLLEGE CODE     COLLEGE NAME              DEPARTMENT\n`;
+      choiceList += `_____________________________________________________________________`;
+
+      for (let i = 1; i <= choicesCount; i++) {
+        const code = parseInt(document.getElementById(`code${i}`).value);
+        const department = document.getElementById(`department${i}`).value;
+
+        let collegeName = '-';
+        for (let j = 0; j < colleges.length; j++) {
+          if (colleges[j].code === code) {
+            collegeName = colleges[j].name;
+            break;
+          }
+        }
+
+        choiceList += `\n${i}        ${code}                 ${collegeName}                         ${department}`;
+        choiceList += `\n___________________________________________________________________`;
+      }
+
+      choiceListOutput.textContent = choiceList;
+      downloadLink.href = `data:text/plain;charset=utf-8,${encodeURIComponent(choiceList)}`;
+      downloadLink.download = 'choice_list.txt';
+      downloadLink.style.display = 'inline-block';
+
+      choiceList.forEach((college) => {
+        if (cutoff >= 197.5 && college.code === 1) {
+          choiceList += `\nYou have chance of getting ${college.name} , ${department} dpt`;
+        } else if (cutoff >= 193.5 && cutoff <= 197 && college.code === 4) {
+          choiceList += `\nYou have chance of getting ${college.name} , ${department} dpt`;
+        } else if (cutoff >= 194.5 && cutoff <= 197 && college.code === 1315) {
+          choiceList += `\nYou have chance of getting ${college.name} , ${department} dpt`;
+        } else if (cutoff >= 185 && college.code === 1399) {
+          choiceList += `\nYou have chance of getting ${college.name} , ${department} dpt`;
+        } else if (cutoff >= 184 && cutoff <= 190 && college.code === 1211) {
+          choiceList += `\nYou have chance of getting ${college.name} , ${department} dpt`;
+        } else if (cutoff >= 180 && cutoff <= 190 && college.code === 1219) {
+          choiceList += `\nYou have chance of getting ${college.name} , ${department} dpt`;
+        } else if (cutoff >= 180 && cutoff <= 190 && college.code === 1419) {
+          choiceList += `\nYou have chance of getting ${college.name} , ${department} dpt`;
+        } else if (cutoff >= 180 && cutoff <= 190 && college.code === 1216) {
+          choiceList += `\nYou have chance of getting ${college.name} , ${department} dpt`;
+        }
+      });
+      choiceList += `\n\tTo download the choice list as file click the download tab on the upper tab`;
+      choiceList += `\n\tThank you ${name} for visting\n\n\t\t\t\tcoded by kayilainathan.choicelist.c`;
+
+      choiceListOutput.textContent = choiceList;
+    });
+  </script>
+</body>
+</html>

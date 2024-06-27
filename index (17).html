@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TNEA Choice List Creator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>TNEA Choice List Creator</h1>
+    <form id="choiceForm">
+      <label for="name">Enter your name:</label>
+      <input type="text" id="name" required>
+
+      <label for="cutoff">Enter your Cut off:</label>
+      <input type="number" id="cutoff" step="0.1" required>
+
+      <label for="choices">Enter the number of choices:</label>
+      <input type="number" id="choices" required>
+
+      <div id="choicesContainer"></div>
+
+      <button type="button" onclick="generateChoices()">Generate Choices</button>
+    </form>
+    <div id="previewContainer"></div>
+    <button id="downloadBtn" onclick="downloadChoices()">Download Choices</button>
+  </div>
+
+  <script>
+const colleges = [
+  { code: 1, name: "CEG" },
+  { code: 4, name: "MIT" },
+  { code: 1315, name: "SSN" },
+  { code: 1399, name: "CIT" },
+  { code: 2006, name: "PSG" },
+  { code: 1211, name: "REC" },
+  { code: 1219, name: "SVCE" },
+  { code: 1419, name: "Sri Sairam" },
+  { code: 1216, name: "Saveetha" },
+  { code: 1317, name: "St.Joseph" },
+  { code: 1113, name: "RMK" },
+  { code: 1112, name: "RMD" },
+  { code: 1324, name: "Sri Sairam Institute" },
+  { code: 1450, name: "Loyola ICAM" },
+  { code: 1210, name: "PANIMALAR" },
+  { code: 2005, name: "GCT Coimbatore" },
+  { code: 2377, name: "PSG iTECH" },
+  { code: 1422, name: "SRM Valliammai" },
+  { code: 2718, name: "SRI KRISHNA" },
+  { code: 2739, name: "SRI ESWAR" },
+  { code: 5008, name: "THIAGARAJAR" },
+  { code: 2007, name: "CIT Coimbatore" }
+];
+
+function generateChoices() {
+  const choicesContainer = document.getElementById('choicesContainer');
+  const numChoices = document.getElementById('choices').value;
+  choicesContainer.innerHTML = '';
+
+  for (let i = 0; i < numChoices; i++) {
+    const choiceDiv = document.createElement('div');
+    choiceDiv.innerHTML = `
+      <label>Choice ${i + 1}:</label>
+      <input type="number" placeholder="College Code" required onchange="updatePreview()">
+      <input type="text" placeholder="Department" required onchange="updatePreview()">
+    `;
+    choicesContainer.appendChild(choiceDiv);
+  }
+
+  document.getElementById('downloadBtn').style.display = 'block';
+}
+
+function updatePreview() {
+  const previewContainer = document.getElementById('previewContainer');
+  const choicesContainer = document.getElementById('choicesContainer');
+  let content = '';
+
+  for (let i = 0; i < choicesContainer.children.length; i++) {
+    const choiceDiv = choicesContainer.children[i];
+    const collegeCode = choiceDiv.children[1].value;
+    const department = choiceDiv.children[2].value;
+
+    const college = colleges.find(c => c.code == collegeCode);
+    const collegeName = college ? college.name : '-';
+
+    content += `<li>Choice ${i + 1}: ${collegeCode} - ${collegeName} - ${department}</li>`;
+  }
+
+  previewContainer.innerHTML = `<ul>${content}</ul>`;
+}
+
+function downloadChoices() {
+  const name = document.getElementById('name').value;
+  const cutoff = document.getElementById('cutoff').value;
+  const choices = document.getElementById('choices').value;
+  const choicesContainer = document.getElementById('choicesContainer');
+
+  let content = `TNEA CHOICE LIST\n\nNAME: ${name}\nCut off: ${cutoff}\nNo of Choices: ${choices}\n\n`;
+  content += "S.NO\tCOLLEGE CODE\tCOLLEGE NAME\tDEPARTMENT\n";
+  content += "_____________________________________________________________________\n";
+
+  for (let i = 0; i < choicesContainer.children.length; i++) {
+    const choiceDiv = choicesContainer.children[i];
+    const collegeCode = choiceDiv.children[1].value;
+    const department = choiceDiv.children[2].value;
+
+    const college = colleges.find(c => c.code == collegeCode);
+    const collegeName = college ? college.name : '-';
+
+    content += `${i + 1}\t${collegeCode}\t${collegeName}\t${department}\n`;
+    content += "_____________________________________________________________________\n";
+  }
+
+  const blob = new Blob([content], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'choice_list.txt';
+  a.click();
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 10px;
+}
+
+input {
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button#downloadBtn {
+  display: none;
+  background-color: #007bff;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+button#downloadBtn:hover {
+  background-color: #0056b3;
+}
+</script>
+</body>
+</html>

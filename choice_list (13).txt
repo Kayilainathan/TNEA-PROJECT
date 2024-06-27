@@ -1,0 +1,4 @@
+S.NO	College Code	College Name	Department
+1	4	MIT	
+2	1	CEG	
+3	2006	PSG	

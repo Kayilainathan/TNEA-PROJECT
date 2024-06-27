@@ -1,0 +1,8 @@
+TNEA CHOICE LIST
+
+NAME: Kayilainathan
+Cut off: 196
+No of Choices: 2
+
+S.NO	COLLEGE CODE	COLLEGE NAME	DEPARTMENT
+_____________________________________________________________________

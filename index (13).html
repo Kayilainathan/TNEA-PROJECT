@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TNEA Choice List Generator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    label {
+        display: block;
+        margin-top: 10px;
+    }
+    input, select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+    }
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    #college-list {
+        margin-top: 20px;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    #college-list th, #college-list td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    #college-list th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+    <h2>TNEA Choice List Generator</h2>
+    <form id="choice-form">
+        <label for="name">Enter your name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="cutoff">Enter your Cut off:</label>
+        <input type="number" id="cutoff" name="cutoff" step="0.1" required>
+        
+        <label for="choices">Enter the number of choices you wish to fill:</label>
+        <input type="number" id="choices" name="choices" min="1" required>
+
+        <div id="college-inputs"></div>
+
+        <button type="button" onclick="addCollegeInput()">Add College Choice</button>
+        <button type="submit">Generate Choice List</button>
+    </form>
+
+    <h3>Generated Choice List</h3>
+    <table id="college-list">
+        <thead>
+            <tr>
+                <th>S.NO</th>
+                <th>COLLEGE CODE</th>
+                <th>COLLEGE NAME</th>
+                <th>DEPARTMENT</th>
+            </tr>
+        </thead>
+        <tbody id="list-body">
+            <!-- Generated list will appear here -->
+        </tbody>
+    </table>
+
+    <button onclick="downloadPDF()">Download as PDF</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script>
+        function addCollegeInput() {
+            var choices = document.getElementById('choices').value;
+            var html = '';
+            for (var i = 1; i <= choices; i++) {
+                html += '<label>Choice ' + i + '</label>';
+                html += '<input type="number" name="code[]" placeholder="Enter College Code" required>';
+                html += '<input type="text" name="department[]" placeholder="Enter Department" required>';
+            }
+            document.getElementById('college-inputs').innerHTML = html;
+        }
+
+        document.getElementById('choice-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            var listBody = document.getElementById('list-body');
+            listBody.innerHTML = ''; // Clear previous list
+
+            var name = formData.get('name');
+            var cutoff = formData.get('cutoff');
+            var choices = formData.get('choices');
+            var codes = formData.getAll('code[]');
+            var departments = formData.getAll('department[]');
+
+            var tableRows = '';
+            for (var i = 0; i < choices; i++) {
+                var collegeCode = codes[i];
+                var department = departments[i];
+                var collegeName = getCollegeName(collegeCode); // Replace with actual function to get college name
+
+                tableRows += '<tr>';
+                tableRows += '<td>' + (i + 1) + '</td>';
+                tableRows += '<td>' + collegeCode + '</td>';
+                tableRows += '<td>' + collegeName + '</td>';
+                tableRows += '<td>' + department + '</td>';
+                tableRows += '</tr>';
+            }
+            listBody.innerHTML = tableRows;
+            alert('Choice list generated successfully!');
+        });
+
+        // Function to fetch college name based on code (mock implementation)
+        function getCollegeName(code) {
+            switch (code) {
+                case '1': return 'CEG';
+                case '4': return 'MIT';
+                case '1315': return 'SSN';
+                case '1399': return 'CIT';
+                case '2006': return 'PSG';
+                // Add more cases as needed
+                default: return 'Unknown';
+            }
+        }
+
+        // Function to download generated list as PDF
+        function downloadPDF() {
+            var doc = new jsPDF();
+            doc.text('Generated Choice List', 20, 10);
+            var elementHTML = document.getElementById('college-list');
+            doc.autoTable({ html: elementHTML });
+
+            // Save the PDF
+            doc.save('choice_list.pdf');
+        }
+    </script>
+</body>
+</html>

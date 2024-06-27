@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TNEA Choice List Generator</title>
+  <style>
+    /* Your existing CSS styles */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TNEA Choice List Generator</h1>
+
+    <form id="choice-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required><br><br>
+
+      <label for="cutoff">Cut-off:</label>
+      <input type="number" id="cutoff" name="cutoff" step="0.1" required><br><br>
+
+      <label for="choices">Number of Choices:</label>
+      <input type="number" id="choices" name="choices" min="1" required><br><br>
+
+      <h3>College Code List:</h3>
+      <table>
+        <!-- Your college list table -->
+      </table>
+
+      <h3>Enter Your Choices:</h3>
+      <div id="choice-list">
+        <!-- Dynamic choice inputs will be added here -->
+      </div>
+
+      <button type="submit">Generate Choice List</button>
+    </form>
+
+    <div id="choice-output">
+      <!-- Generated choice list will be displayed here -->
+    </div>
+
+    <div class="download-link">
+      <a href="#" id="download-link" download="choice_list.txt">Download Choice List</a>
+    </div>
+
+    <p>Thank you for using the TNEA Choice List Generator - coded by KAYILAINATHAN.</p>
+    <p>Top College List:</p>
+    <ul id="college-list">
+      <!-- Top college list items -->
+    </ul>
+
+    <p>kayilainathan.choicelist.c.code</p>
+  </div>
+
+  <script>
+    const choiceForm = document.getElementById('choice-form');
+    const choiceList = document.getElementById('choice-list');
+    const choiceOutput = document.getElementById('choice-output');
+    const downloadLink = document.getElementById('download-link');
+    const collegeList = document.getElementById('college-list');
+
+    // Function to generate choice input fields dynamically
+    function createChoiceInputs(choices) {
+      choiceList.innerHTML = ''; // Clear previous choices
+      for (let i = 1; i <= choices; i++) {
+        const codeLabel = document.createElement('label');
+        codeLabel.textContent = `Choice ${i} - College Code:`;
+        choiceList.appendChild(codeLabel);
+
+        const codeInput = document.createElement('input');
+        codeInput.type = 'number';
+        codeInput.name = `code${i}`;
+        choiceList.appendChild(codeInput);
+
+        const deptLabel = document.createElement('label');
+        deptLabel.textContent = `Department:`;
+        choiceList.appendChild(deptLabel);
+
+        const deptInput = document.createElement('input');
+        deptInput.type = 'text';
+        deptInput.name = `dept${i}`;
+        choiceList.appendChild(deptInput);
+
+        choiceList.appendChild(document.createElement('br'));
+        choiceList.appendChild(document.createElement('br'));
+      }
+    }
+
+    choiceForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const cutoff = parseFloat(document.getElementById('cutoff').value);
+      const choices = parseInt(document.getElementById('choices').value);
+
+      // Create choice input fields dynamically
+      createChoiceInputs(choices);
+
+      // Process form data
+      const formData = new FormData(choiceForm);
+      const choiceData = {};
+      for (const [key, value] of formData.entries()) {
+        choiceData[key] = value;
+      }
+
+      // Generate and display choice list
+      const choiceListHtml = generateChoiceListHtml(choiceData, cutoff);
+      choiceOutput.innerHTML = choiceListHtml;
+
+      // Create download link
+      const choiceListText = generateChoiceListText(choiceData, cutoff);
+      downloadLink.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(choiceListText);
+      downloadLink.download = 'choice_list.txt';
+    });
+
+    // Function to generate HTML for choice list
+    function generateChoiceListHtml(choiceData, cutoff) {
+      let html = `
+        <h2>Your Choice List:</h2>
+        <table>
+          <tr>
+            <th>S.NO</th>
+            <th>COLLEGE CODE</th>
+            <th>COLLEGE NAME</th>
+            <th>DEPARTMENT</th>
+          </tr>
+          <tr>
+            <td colspan="4">_____________________________________________________________________</td>
+          </tr>
+      `;
+
+      // College codes and names (unchanged from your original code)
+
+      // Loop through choices and generate HTML
+      let i = 1;
+      while (choiceData[`code${i}`] !== undefined) {
+        const code = choiceData[`code${i}`];
+        const dept = choiceData[`dept${i}`];
+        let collegeName = code in collegeCodes ? collegeCodes[code] : '-';
+
+        html += `
+          <tr>
+            <td>${i}</td>
+            <td>${code}</td>
+            <td>${collegeName}</td>
+            <td>${dept}</td>
+          </tr>
+          <tr>
+            <td colspan="4">_____________________________________________________________________</td>
+          </tr>
+        `;
+        i++;
+      }
+
+      html += `
+        </table>
+      `;
+
+      // Chance of getting colleges based on cutoff (unchanged from your original code)
+
+      html += `
+        <p>To download the choice list as a file, click the download tab above.</p>
+      `;
+
+      return html;
+    }
+
+    // Function to generate text for choice list (unchanged from your original code)
+    function generateChoiceListText(choiceData, cutoff) {
+      // Implementation remains the same as your original code
+    }
+  </script>
+</body>
+</html>

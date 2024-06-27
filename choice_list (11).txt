@@ -1,0 +1,3 @@
+S.NO	College Code	College Name	Department
+1	2007	CIT Coimbatore	CSE
+2	1317	St.Joseph	ECE

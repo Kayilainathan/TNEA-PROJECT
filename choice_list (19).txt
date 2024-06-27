@@ -1,0 +1,11 @@
+TNEA Choice ListName: Kayilainat ha nl 
+Cut off: 180.7
+Number of Choices: 3
+S.NO	College Code	College Name				Department
+1	1211		REC				CSE
+                
+2	2739		SRI ESWAR				ECE
+                
+3	2007		CIT Coimbatore				IT
+                	THANKS FOR USING TNEA CHOICE CREATER
+Coded by: KAYILAINATHAN

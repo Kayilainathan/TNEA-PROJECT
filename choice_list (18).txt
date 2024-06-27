@@ -1,0 +1,11 @@
+TNEA Choice ListName: Kayilainathan 
+Cut off: 196.5
+Number of Choices: 3
+S.NO	College Code	College Name	Department
+1	1219		SVCE		CSE
+                
+2	1399		CIT		ECE
+                
+3	5008		THIAGARAJAR		TET
+                	THANKS FOR USING TNEA CHOICE CREATER
+Coded by: KAYILAINATHAN

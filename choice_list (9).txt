@@ -1,0 +1,27 @@
+TNEA Choice ListName: Kayilainathan J Cut off: 196.0Number of Choices: 5S.NOCollege CodeCollege NameDepartment
+                    1
+                    1
+                    CEG
+                    CSE
+                
+                    2
+                    1
+                    CEG
+                    IT
+                
+                    3
+                    1
+                    CEG
+                    ECE
+                
+                    4
+                    1
+                    CEG
+                    ECSS
+                
+                    5
+                    1
+                    CEG
+                    EEE
+                	THANKS FOR USING TNEA CHOICE CREATER
+Coded by: KAYILAINATHAN

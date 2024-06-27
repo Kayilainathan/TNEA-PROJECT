@@ -1,0 +1,11 @@
+<h2>TNEA Choice List</h2><p>Name: Kayilainathan</p><p>Cut off: 196.0</p><p>Number of Choices: 2</p><table><tr><th>S.NO</th><th>College Code</th><th>College Name</th><th>Department</th></tr><tr>
+                    <td>1</td>
+                    <td>2006</td>
+                    <td>PSG</td>
+                    <td></td>
+                </tr><tr>
+                    <td>2</td>
+                    <td>2007</td>
+                    <td>CIT Coimbatore</td>
+                    <td>ECE</td>
+                </tr></table><p>Coder Name: KAYILAINATHAN</p><p>THANKS FOR USING TNEA CHOICE CREATER</p>
