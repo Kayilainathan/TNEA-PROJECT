@@ -120,12 +120,8 @@
         button.download:hover {
             background-color: #9400D3; /* Violet */
         }
-        
-        #codedBy {
-            text-align: center;
-            color: #FF69B4; /* Hot pink */
-            margin-bottom: 20px;
-        }
+
+ 
     </style>
 </head>
 <body>
@@ -148,7 +144,6 @@
             <button type="button" onclick="generateChoicesForm()">Generate Choices Form</button>
             <button type="button" onclick="showCollegeList()">Show College List</button>
         </div>
-        <div id="codedBy">Coded by Kayilainathan</div> <!-- Coded by Kayilainathan text here -->
         <div class="choices-container" id="choicesContainer"></div>
         <div class="form-group">
             <button id="submitBtn" type="button" onclick="submitChoices()" style="display: none;">Submit</button>
@@ -188,8 +183,6 @@
         ];
 
         function generateChoicesForm() {
-            document.getElementById('codedBy').style.display = 'none'; // Hide Coded by Kayilainathan
-
             const numChoices = parseInt(document.getElementById('numChoices').value);
             const choicesContainer = document.getElementById('choicesContainer');
             choicesContainer.innerHTML = '';
@@ -264,12 +257,8 @@
             }
 
             resultHtml += `</table>`;
-            resultHtml += `<div id="codedByEnd">Coded by: Kayilainathan</div>`;
+            resultHtml += `<div id="createdBy">Created by: Kayilainathan</div>`;
             document.getElementById('result').innerHTML = resultHtml;
-
-            // Hide Coded by Kayilainathan and Submit button
-            document.getElementById('codedBy').style.display = 'none';
-            document.getElementById('submitBtn').style.display = 'none';
 
             // Scroll to the end of the page
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -301,7 +290,6 @@
             resultText += `Name: ${name}\n`;
             resultText += `Cut off: ${cutoff.toFixed(1)}\n`;
             resultText += `Number of Choices: ${numChoices}\n\n`;
-            resultText += `S.No\tCollege Code\tCollege Name\tDepartment\n`;
 
             for (let i = 1; i <= numChoices; i++) {
                 const collegeSelectValue = document.getElementById(`collegeCode${i}`).value;
@@ -312,10 +300,13 @@
                 const college = colleges.find(col => col.code == collegeCode);
                 const collegeName = college ? college.name : "Unknown";
 
-                resultText += `${i}\t${collegeCode}\t${collegeName}\t${department}\n`;
-            }
+                resultText += `Choice ${i}\n`;
+                resultText += `College Code: ${collegeCode}\n`;
+                resultText += `College Name: ${collegeName}\n`;
+                resultText += `Department: ${department}\n\n`;
 
-            resultText += `\nCoded by Kayilainathan\nThanks for downloading, ${name}!\n`;
+            }
+            resultText += `\nCreated by Kayilainathan\nThanks for downloading, ${name}!\n`;
 
             const filename = 'choice_list.txt';
             downloadFile(filename, resultText);

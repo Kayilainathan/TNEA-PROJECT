@@ -1,117 +1,235 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>TNEA Choice List Generator</title>
-  <style>
-    body {
-      font-family: sans-serif;
-    }
-    table {
-      width: 80%;
-      margin: 20px auto;
-      border-collapse: collapse;
-    }
-    th, td {
-      text-align: left;
-      padding: 8px;
-      border: 1px solid #ddd;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    #choices {
-      display: none;
-    }
-    #download-btn {
-      display: none;
-    }
-    #results {
-      margin-top: 20px;
-    }
-    #results-text {
-      margin-top: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNEA Choice List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #800080;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+        button:hover {
+            background-color: #9932CC;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .result table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .result table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .choices-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .choice-group {
+            flex: 1 1 200px;
+        }
+    </style>
 </head>
 <body>
-  <h1>TNEA Choice List Generator</h1>
+    <h1>TNEA Choice List Generator</h1>
+    <h2>Created by Kayilainathan</h2>
+    <form id="choiceForm">
+        <div class="form-group">
+            <label for="name">Enter your name:</label>
+            <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="cutoff">Enter your Cut off:</label>
+            <input type="number" step="0.1" id="cutoff" required>
+        </div>
+        <div class="form-group">
+            <label for="numChoices">Enter the number of choices you wish to fill:</label>
+            <input type="number" id="numChoices" required>
+        </div>
+        <div class="form-group">
+            <button type="button" onclick="generateChoicesForm()">Generate Choices Form</button>
+        </div>
+        <div class="choices-container" id="choicesContainer"></div>
+        <div class="form-group">
+            <button type="button" onclick="submitChoices()">Submit</button>
+        </div>
+    </form>
 
-  <form id="form">
-    <label for="name">Enter your name:</label>
-    <input type="text" id="name" name="name" required><br><br>
+    <div class="result" id="result"></div>
 
-    <label for="cutoff">Enter your cut-off:</label>
-    <input type="number" id="cutoff" name="cutoff" required><br><br>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script>
+        const colleges = [
+            { code: 1, name: "CEG" },
+            { code: 4, name: "MIT" },
+            { code: 1315, name: "SSN" },
+            { code: 1399, name: "CIT" },
+            { code: 2006, name: "PSG" },
+            { code: 1211, name: "REC" },
+            { code: 1219, name: "SVCE" },
+            { code: 1419, name: "Sri Sairam" },
+            { code: 1216, name: "Saveetha" },
+            { code: 1317, name: "St.Joseph" },
+            { code: 1113, name: "RMK" },
+            { code: 1112, name: "RMD" },
+            { code: 1324, name: "Sri Sairam Institute" },
+            { code: 1450, name: "Loyola ICAM" },
+            { code: 1210, name: "PANIMALAR" },
+            { code: 2005, name: "GCT Coimbatore" },
+            { code: 2377, name: "PSG iTECH" },
+            { code: 1422, name: "SRM Valliammai" },
+            { code: 2718, name: "SRI KRISHNA" },
+            { code: 2739, name: "SRI ESWAR" },
+            { code: 5008, name: "THIAGARAJAR" },
+            { code: 2007, name: "CIT Coimbatore" }
+        ];
 
-    <label for="num-choices">Enter the number of choices:</label>
-    <input type="number" id="num-choices" name="num-1" min="1" max="21" required><br><br>
+        function generateChoicesForm() {
+            const numChoices = parseInt(document.getElementById('numChoices').value);
+            const choicesContainer = document.getElementById('choicesContainer');
+            choicesContainer.innerHTML = '';
 
-    <div id="choices-inputs"></div>
+            for (let i = 1; i <= numChoices; i++) {
+                const choiceGroup = document.createElement('div');
+                choiceGroup.className = 'choice-group';
 
-    <button type="submit">Generate Choice List</button>
-  </form>
+                const collegeLabel = document.createElement('label');
+                collegeLabel.textContent = `Choice ${i} - College Code:`;
+                choiceGroup.appendChild(collegeLabel);
 
-  <div id="choices">
-    <h2>Your Choices:</h2>
-    <table id="choice-table">
-      <thead>
-        <tr>
-          <th>S.No</th>
-          <th>College Code</th>
-          <th>College Name</th>
-          <th>Department</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+                const collegeSelect = document.createElement('select');
+                collegeSelect.id = `collegeCode${i}`;
+                collegeSelect.required = true;
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select College Code';
+                collegeSelect.appendChild(defaultOption);
+                colleges.forEach(college => {
+                    const option = document.createElement('option');
+                    option.value = college.code;
+                    option.textContent = `${college.code} - ${college.name}`;
+                    collegeSelect.appendChild(option);
+                });
+                choiceGroup.appendChild(collegeSelect);
 
-  <div id="results">
-    <h2>Possible Choices based on Cut-off:</h2>
-    <div id="results-text"></div>
-  </div>
+                const collegeInput = document.createElement('input');
+                collegeInput.type = 'text';
+                collegeInput.id = `collegeCodeInput${i}`;
+                collegeInput.placeholder = 'Or enter College Code';
+                choiceGroup.appendChild(collegeInput);
 
-  <button id="download-btn">Download Choice List</button>
+                const departmentLabel = document.createElement('label');
+                departmentLabel.textContent = `Choice ${i} - Department:`;
+                choiceGroup.appendChild(departmentLabel);
 
-  <script>
-    const form = document.getElementById('form');
-    const choicesInput = document.getElementById('choices-inputs');
-    const choiceTable = document.getElementById('choice-table').getElementsByTagName('tbody')[0];
-    const resultsText = document.getElementById('results-text');
-    const downloadBtn = document.getElementById('download-btn');
-    const colleges = {
-      "1": "CEG", "4": "MIT", "1315": "SSN", "1399": "CIT", "2006": "PSG", "1211": "REC", "1219": "SVCE", 
-      "1419": "Sri Sairam", "1216": "Saveetha", "1317": "St.Joseph", "1113": "RMK", "1112": "RMD", "1324": "Sri Sairam Institute", 
-      "1450": "Loyola ICAM", "1210": "PANIMALAR", "2005": "GCT Coimbatore", "2377": "PSG iTECH", "1422": "SRM Valliammai", 
-      "2718": "SRI KRISHNA", "2739": "SRI ESWAR", "5008": "THIAGARAJAR", "2007": "CIT Coimbatore"
-    };
+                const departmentInput = document.createElement('input');
+                departmentInput.type = 'text';
+                departmentInput.id = `department${i}`;
+                departmentInput.required = true;
+                choiceGroup.appendChild(departmentInput);
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
+                choicesContainer.appendChild(choiceGroup);
+            }
+        }
 
-      const name = document.getElementById('name').value;
-      const cutoff = parseFloat(document.getElementById('cutoff').value);
-      const numChoices = parseInt(document.getElementById('num-choices').value);
+        function submitChoices() {
+            const name = document.getElementById('name').value;
+            const cutoff = parseFloat(document.getElementById('cutoff').value);
+            const numChoices = parseInt(document.getElementById('numChoices').value);
 
-      choiceTable.innerHTML = ''; // Clear previous choices
-      resultsText.innerHTML = ''; // Clear previous results
+            let resultHtml = `<h2>TNEA Choice List</h2>`;
+            resultHtml += `<p>Name: ${name}</p>`;
+            resultHtml += `<p>Cut off: ${cutoff.toFixed(1)}</p>`;
+            resultHtml += `<p>Number of Choices: ${numChoices}</p>`;
+            resultHtml += `<table>`;
+            resultHtml += `<tr><th>S.NO</th><th>College Code</th><th>College Name</th><th>Department</th></tr>`;
 
-      let choiceCount = 1;
-      for (let i = 0; i < numChoices; i++) {
-        const choiceInput = document.createElement('input');
-        choiceInput.type = 'text';
-        choiceInput.name = `choice-${i + 1}`;
-        choiceInput.placeholder = 'Enter college code and department (e.g., 1-CEG)';
-        choiceInput.required = true;
-        choicesInput.appendChild(choiceInput);
+            let choiceData = [];
 
-        const br = document.createElement('br');
-        choicesInput.appendChild(br);
-      }
+            for (let i = 1; i <= numChoices; i++) {
+                const collegeSelectValue = document.getElementById(`collegeCode${i}`).value;
+                const collegeInputValue = document.getElementById(`collegeCodeInput${i}`).value.trim();
+                const collegeCode = collegeSelectValue || collegeInputValue;
+                const department = document.getElementById(`department${i}`).value;
 
-      const choices = Array.from(document.querySelectorAll('[name^="choice-"]')).map(input => input.value);
+                const college = colleges.find(col => col.code == collegeCode);
+                const collegeName = college ? college.name : "Unknown";
 
-      choices.forEach(choice => {
-        const [collegeCode, department] = choice.split('-');
-        const collegeName = colleges[collegeCode] || '-';
-        const row = choice
+                resultHtml += `<tr><td>${i}</td><td>${collegeCode}</td><td>${collegeName}</td><td>${department}</td></tr>`;
+
+                choiceData.push({
+                    SNO: i,
+                    CollegeCode: collegeCode,
+                    CollegeName: collegeName,
+                    Department: department
+                });
+            }
+
+            resultHtml += `</table>`;
+            resultHtml += `<p>THANKS FOR USING TNEA CHOICE CREATOR</p>`;
+            resultHtml += `<p>Coded by: KAYILAINATHAN</p>`;
+            document.getElementById('result').innerHTML = resultHtml;
+            downloadFile(name, cutoff, numChoices, choiceData);
+        }
+
+        function downloadFile(name, cutoff, numChoices, choiceData) {
+            const wb = XLSX.utils.book_new();
+            const wsData = [
+                ["Name", name],
+                ["Cut off", cutoff.toFixed(1)],
+                ["Number of Choices", numChoices],
+                [],
+                ["S.NO", "College Code", "College Name", "Department"]
+            ];
+
+            choiceData.forEach(choice => {
+                wsData.push([choice.SNO, choice.CollegeCode, choice.CollegeName, choice.Department]);
+            });
+
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+            // Set column widths for better spacing
+            const wscols = [
+                { wch: 5 },   // S.NO
+                { wch: 15 },  // College Code
+                { wch: 40 },  // College Name
+                { wch: 40 }   // Department
+            ];
+            ws['!cols'] = wscols;
+
+            XLSX.utils.book_append_sheet(wb, ws, "Choice List");
+            XLSX.writeFile(wb, "choice_list.xlsx");
+        }
+    </script>
+</body>
+</html>
